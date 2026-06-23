@@ -71,6 +71,13 @@ int main()
     ball.position.x += ball.velocity.x * DT;
     ball.position.y += ball.velocity.y * DT;
 
+    // Check for collision with the ground
+    if(ball.position.y + ball.radius >= WINDOW_HEIGHT)
+    {
+        ball.position.y = WINDOW_HEIGHT - ball.radius; // Reset position to ground level
+        ball.velocity.y *= -RESTITUTION; // Reverse and reduce velocity based on restitution
+    }
+
     //sync the visual representation with the particle's position
     ballshape.setPosition(sf::Vector2f(ball.position.x, ball.position.y));
 
