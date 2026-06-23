@@ -9,7 +9,7 @@ using namespace std;
 
 constexpr float GRAVITY = 9.81f;
 constexpr float RESTITUTION = 0.8f;
-constexpr float DT = 1.0f/60.0f;
+constexpr float DT = 1.0f/480.0f;
 constexpr unsigned int WINDOW_WIDTH = 1000u;
 constexpr unsigned int WINDOW_HEIGHT = 800u;
 
@@ -38,13 +38,24 @@ int main()
     ball.position = {500.0f, 400.0f};
     ball.velocity = {0.0f, 0.0f};
     ball.mass = 1.0f;
-    ball.radius = 20.0f; 
+    ball.radius = 5.0f; 
+
+    //Create a circle shape to represent the ball visually
+    sf::CircleShape ballshape(ball.radius);
+    ballshape.setFillColor(sf::Color::White);
+
+    // Set origin to center for proper positioning
+    ballshape.setOrigin(sf::Vector2f(ball.radius, ball.radius)); 
+
+    
 
     cout <<"Ball created at position: [" << ball.position.x << ", " << ball.position.y << "] with radius: " << ball.radius << endl; 
     float logTimer = 0.0f;
 
     while(window.isOpen())
     {
+        
+
         while(auto event = window.pollEvent())
         {
             if(event->is<sf::Event::Closed>())
@@ -53,20 +64,25 @@ int main()
             }
         }
 
-        // Physics simulation loop
+    // Physics simulation loop
     ball.velocity.y +=GRAVITY * DT;
+
 
     ball.position.x += ball.velocity.x * DT;
     ball.position.y += ball.velocity.y * DT;
 
+    //sync the visual representation with the particle's position
+    ballshape.setPosition(sf::Vector2f(ball.position.x, ball.position.y));
+
     logTimer += DT;
     if(logTimer >= 1.0f && ball.position.y + ball.radius <= WINDOW_HEIGHT)
     {
-        cout << "Ball position: [" << ball.position.x << ", " << ball.position.y << "]" <<  ball.velocity.y << endl;
+        cout << "Ball position: [" << ball.position.x << ", " << ball.position.y << "]" << " Velocity: [" << ball.velocity.x << ", " << ball.velocity.y << "]" << endl;
         logTimer = 0.0f;
     }
 
         window.clear();
+        window.draw(ballshape);
         window.display();
     }
 
