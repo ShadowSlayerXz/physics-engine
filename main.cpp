@@ -10,10 +10,69 @@ using namespace std;
 constexpr float GRAVITY = 9.81f;
 constexpr float RESTITUTION = 0.8f;
 constexpr float DT = 1.0f/60.0f;
-constexpr float WINDOW_WIDTH = 800.0f;
-constexpr float WINDOW_HEIGHT = 600.0f;
+constexpr unsigned int WINDOW_WIDTH = 1000u;
+constexpr unsigned int WINDOW_HEIGHT = 800u;
 
-int main() {
-   cout << "testing" << endl;
-   return 0;
+struct vector2
+{
+    float x;
+    float y;
+};
+
+struct Particle
+{
+    vector2 position;
+    vector2 velocity;
+    float mass;
+    float radius;
+};
+
+int main()
+{
+   // Create a window for rendering 
+    sf::RenderWindow window(
+        sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}),"Physics Engine");
+    
+    // Create a particle representing a ball    
+    Particle ball;
+    ball.position = {500.0f, 400.0f};
+    ball.velocity = {0.0f, 0.0f};
+    ball.mass = 1.0f;
+    ball.radius = 20.0f; 
+
+    cout <<"Ball created at position: [" << ball.position.x << ", " << ball.position.y << "] with radius: " << ball.radius << endl; 
+    float logTimer = 0.0f;
+
+    while(window.isOpen())
+    {
+        while(auto event = window.pollEvent())
+        {
+            if(event->is<sf::Event::Closed>())
+            {
+                window.close();
+            }
+        }
+
+        // Physics simulation loop
+    ball.velocity.y +=GRAVITY * DT;
+
+    ball.position.x += ball.velocity.x * DT;
+    ball.position.y += ball.velocity.y * DT;
+
+    logTimer += DT;
+    if(logTimer >= 1.0f && ball.position.y + ball.radius <= WINDOW_HEIGHT)
+    {
+        cout << "Ball position: [" << ball.position.x << ", " << ball.position.y << "]" << endl;
+        logTimer = 0.0f;
+    }
+
+        window.clear();
+        window.display();
+    }
+
+    
+
+    
+
+    return 0;
 }
