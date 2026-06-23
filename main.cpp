@@ -62,17 +62,13 @@ int main()
     logTimer += DT;
     if(logTimer >= 1.0f && ball.position.y + ball.radius <= WINDOW_HEIGHT)
     {
-        cout << "Ball position: [" << ball.position.x << ", " << ball.position.y << "]" << endl;
+        cout << "Ball position: [" << ball.position.x << ", " << ball.position.y << "]" <<  ball.velocity.y << endl;
         logTimer = 0.0f;
     }
 
         window.clear();
         window.display();
     }
-
-    
-
-    
 
     return 0;
 }
